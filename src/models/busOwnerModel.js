@@ -40,7 +40,7 @@ const busOwnerSchema = new mongoose.Schema({
     type: Number,
     required: true,
     min: 0,
-    max: 10,
+    max: 5,
   },
   amenities: {
     type: [String],

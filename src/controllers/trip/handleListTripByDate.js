@@ -1,8 +1,13 @@
 const trips = require("../../models/tripModel");
 const handleListTripByDate = async (req, res) => {
   try {
-    // const date = req.body.date;
-    const trip = await trips.find({ date: req.body.date });
+    const date = req.params.date;
+    if (!date) {
+      return res
+        .status(400)
+        .json({ message: "Date query parameter is required." });
+    }
+    const trip = await trips.find({ date: date });
     if (!trip) {
       res.status(404).json({ message: "Trips not found for this date" });
     }

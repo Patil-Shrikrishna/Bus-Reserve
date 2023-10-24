@@ -10,7 +10,7 @@ const bookingModelSchema = new mongoose.Schema({
   passengerGender: {
     type: String,
     require: true,
-    enum: [Male, Female, Other],
+    enum: ["Male", "Female", "Other"],
   },
   passengerAge: {
     type: Number,
