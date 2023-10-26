@@ -68,12 +68,6 @@ const tripModelSchema = new mongoose.Schema({
   category: {
     type: String,
     required: true,
-    validate: {
-      validator: function (value) {
-        return /^[A-Za-z0-9]+$/.test(value);
-      },
-      message: "Invalid Bus Number!",
-    },
   },
   seatBooked: {
     type: [String],
@@ -84,7 +78,7 @@ const tripModelSchema = new mongoose.Schema({
     required: true,
     validate: {
       validator: function (value) {
-        return /^[A-Za-z0-9]+$/.test(value);
+        return /^[A-Za-z0-9\s]+$/.test(value);
       },
       message: "Invalid Bus Number!",
     },

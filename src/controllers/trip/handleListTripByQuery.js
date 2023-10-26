@@ -1,4 +1,4 @@
-// const trips = require("../../models/tripModel");
+const trips = require("../../models/tripModel");
 const busOwner = require("../../models/busOwnerModel");
 const handleListTripByQuery = async (req, res) => {
   try {
@@ -17,10 +17,6 @@ const handleListTripByQuery = async (req, res) => {
       filters.to = to;
     }
 
-    if (rating) {
-      filters.rating = Number(rating);
-    }
-
     if (arrival) {
       filters.arrival = arrival;
     }
@@ -32,17 +28,40 @@ const handleListTripByQuery = async (req, res) => {
     if (name) {
       filters.name = name;
     }
-    console.log("Filters:", filters);
+    const busFilter = {};
+    if (rating) {
+      busFilter.rating = Number(rating);
+    }
+    console.log("trips Filters:", filters);
+    console.log("bus Filters:", busFilter);
 
-    const filteredTrips2 = await busOwner.find(filters);
-    console.log("Filtered Trips:", filteredTrips2);
+    // let trip = await trips.find(filters);
 
-    if (filteredTrips2.length === 0) {
+    // const buses = await busOwner.find(busFilter);
+
+    // const filteredTrips = { trip, buses };
+
+    const filteredTrips = await trips.aggregate([
+      {
+        $lookup: {
+          from: "bus_owners",
+          localField: "busOwnerID",
+          foreignField: "busOwnerID",
+          as: "busDetails",
+        },
+      },
+      { $match: filters },
+    ]);
+
+    console.log("Filtered Trips:", filteredTrips);
+
+    if (filteredTrips.length === 0) {
       res.status(404).json({ message: "Trips not found for this query" });
     } else {
-      res.status(200).json(filteredTrips2);
+      res.status(200).json(filteredTrips);
     }
   } catch (error) {
+    console.log(error);
     res.status(500).json({
       message: "An unexpected error occurred. Please try again later.",
     });

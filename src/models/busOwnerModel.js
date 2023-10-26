@@ -54,6 +54,6 @@ const busOwnerSchema = new mongoose.Schema({
   },
 });
 
-const busOwner = mongoose.model("bus_owner", busOwnerSchema);
+const busOwner = mongoose.model("bus_owners", busOwnerSchema);
 
 module.exports = busOwner;
