@@ -8,6 +8,9 @@ export default {
         "custom-green": "#00AD3B",
         "custom-gray": "#EBE9E9",
       },
+      backgroundImage: {
+        "custom-bg-seach": "url('/src/assets/search.svg')",
+      },
     },
   },
   plugins: [],

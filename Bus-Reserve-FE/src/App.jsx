@@ -3,6 +3,7 @@ import Footer from "./components/Footer";
 import Heading from "./components/Heading";
 import Navbar from "./components/Navbar";
 import Rating from "./components/Rating";
+import SearchBar from "./components/SearchBar";
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
         <Heading heading="Primary Heading" />
         <Button onClick={() => console.log("Hello")} name="Login" />
         <Rating rating="4.5" />
+        <SearchBar name="From" />
         <Footer />
       </div>
     </div>
