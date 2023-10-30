@@ -1,6 +1,8 @@
 import Button from "./components/Button";
+import Footer from "./components/Footer";
 import Heading from "./components/Heading";
 import Navbar from "./components/Navbar";
+import Rating from "./components/Rating";
 
 function App() {
   return (
@@ -12,6 +14,8 @@ function App() {
         <Heading heading="Primary Heading" primary={true} />
         <Heading heading="Primary Heading" />
         <Button onClick={() => console.log("Hello")} name="Login" />
+        <Rating rating="4.5" />
+        <Footer />
       </div>
     </div>
   );
