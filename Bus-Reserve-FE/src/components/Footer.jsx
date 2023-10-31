@@ -7,10 +7,10 @@ import instagram from "../assets/instagram.svg";
 const Footer = () => {
   return (
     <div className="flex flex-col bg-custom-gray items-center">
-      <div className="flex w-full px-40 py-16">
-        <div className="flex flex-col w-1/2 gap-2">
+      <div className="flex flex-col sm:flex-row w-full items-center sm:px-40 px-10 py-16">
+        <div className="flex flex-col sm:w-1/2 w-1/2 gap-2 pb-10">
           <img src={logo} className="w-40 object-contain mr-10" />
-          <div className="flex flex-col w-2/5 gap-2 pt-4">
+          <div className="flex flex-col md:w-3/5 w-full gap-2 pt-4">
             <p>When you have a choice. Choose Reserve.</p>
             <p>
               Reserve offers bus tickets booking through it’s website, IOS, and
@@ -19,14 +19,14 @@ const Footer = () => {
             <p>When you have a choice. Choose Reserve.</p>
           </div>
         </div>
-        <div className="flex w-1/2 gap-32 justify-end">
+        <div className="flex sm:flex-row flex-col sm:w-1/2 sm:gap-12 gap-6 sm:justify-end">
           <div>
-            <Heading heading="About" className="pb-4" />
+            <Heading heading="About" className="pb-4 font-bold" />
             <p>About Us</p>
             <p>Contact Us</p>
           </div>
           <div>
-            <Heading heading="Useful Links" className="pb-4" />
+            <Heading heading="Useful Links" className="pb-4 font-bold" />
             <p>Careers</p>
             <p>FAQ</p>
             <p>T & C</p>
@@ -34,7 +34,7 @@ const Footer = () => {
             <p>Blog</p>
           </div>
           <div>
-            <Heading heading="Follow Us" className="pb-4" />
+            <Heading heading="Follow Us" className="pb-4 font-bold" />
             <div className="flex gap-2">
               <img src={instagram} className="" />
               <img src={facebook} className="" />
