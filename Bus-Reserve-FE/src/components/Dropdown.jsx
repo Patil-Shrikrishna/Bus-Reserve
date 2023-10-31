@@ -4,9 +4,13 @@ const Dropdown = (props) => {
     return <option value={item}>{item}</option>;
   });
   return (
-    <div>
+    <div className="w-fit flex items-center justify-center">
       {props.label && <label for={props.label}>{props.label} : </label>}
-      <select name={props.label} id={props.label}>
+      <select
+        name={props.label}
+        id={props.label}
+        className="focus:outline-none border rounded-md"
+      >
         {list}
       </select>
     </div>
