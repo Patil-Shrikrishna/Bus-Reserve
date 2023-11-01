@@ -1,14 +1,15 @@
 // import Home from "./pages/Home";
 // import AvailableBus from "./pages/AvailableBus";
 
-import BusDetailCard from "./components/BusDetailCard";
+// import BusDetailCard from "./components/BusDetailCard";
+import AvailableBus from "./pages/AvailableBus";
 
 function App() {
   return (
     <div>
       {/* <Home /> */}
       {/* <AvailableBus /> */}
-      <BusDetailCard />
+      <AvailableBus />
     </div>
   );
 }
