@@ -2,11 +2,12 @@
 // import AvailableBus from "./pages/AvailableBus";
 
 // import BusDetailCard from "./components/BusDetailCard";
+// import SeatLayout from "./components/SeatLayout";
 import AvailableBus from "./pages/AvailableBus";
 
 function App() {
   return (
-    <div>
+    <div className="">
       {/* <Home /> */}
       {/* <AvailableBus /> */}
       <AvailableBus />

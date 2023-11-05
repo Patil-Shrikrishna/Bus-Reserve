@@ -12,7 +12,6 @@ const tripModelSchema = new mongoose.Schema({
         const maxTimestamp = Math.floor(
           (Date.now() + 3 * 30 * 24 * 60 * 60 * 1000) / 1000
         );
-
         return value > minTimestamp && value < maxTimestamp;
       },
       message: "Date must be within 5 hours from now and 3 months from now",

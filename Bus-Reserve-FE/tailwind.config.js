@@ -14,6 +14,9 @@ export default {
       backgroundImage: {
         "custom-bg-seach": "url('/src/assets/search.svg')",
         "custom-bg-heroImage": "url('/src/assets/heroImage.jpg')",
+        "custom-bg-vacant": "url('/src/assets/available-bus-seat.svg')",
+        "custom-bg-reserved": "url('/src/assets/booked-bus-seat.svg')",
+        "custom-bg-selected": "url('/src/assets/selected-bus-seat.svg')",
       },
       screens: {
         sm: "640px",

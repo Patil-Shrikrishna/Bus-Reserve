@@ -1,58 +1,45 @@
 import React from "react";
 import Heading from "./Heading";
+import moment from "moment";
 
-const DateComponent = (props) => {
-  // let day = new Date().getDay();
-  // let date = new Date().getDate();
-  // let month = new Date().getMonth();
-  // let year = new Date().getFullYear();
-
+const DateComponent = () => {
   const dates = [];
-  const currentMonth = 10;
-  const currentYear = 2023;
 
-  const currentDate = new Date(currentYear, currentMonth, 1 + props.week);
+  const year = 2023;
+  const month = 10;
 
-  while (currentDate.getMonth() === currentMonth && dates.length < 10) {
-    dates.push(new Date(currentDate));
-    currentDate.setDate(currentDate.getDate() + 1);
+  const daysInMonth = moment(`${year}-${month + 1}`, "YYYY-MM").daysInMonth();
+
+  for (let day = 1; day <= daysInMonth; day++) {
+    const date = moment(`${year}-${month + 1}-${day}`, "YYYY-MM-DD");
+    dates.push(day);
   }
 
-  const weekDays = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
-  const monthsArray = [
-    "Jan",
-    "Feb",
-    "Mar",
-    "Apr",
-    "May",
-    "Jun",
-    "Jul",
-    "Aug",
-    "Sep",
-    "Oct",
-    "Nov",
-    "Dec",
-  ];
-
-  const calender = dates.map((date) => (
-    <div className=" flex flex-col items-center">
+  const calender = dates.map((date, index) => (
+    <button
+      key={index}
+      value={moment(`${year}-${month + 1}-${date}`, "YYYY-MM-DD")}
+      className=" flex flex-col items-center justify-center"
+    >
       <Heading
-        heading={JSON.stringify(date.getDate())}
+        heading={JSON.stringify(date)}
         className="text-sm md:text-md xl:text-2xl font-bold"
       />
       <Heading
-        heading={weekDays[JSON.stringify(date.getDay())]}
+        heading={moment(`${year}-${month + 1}-${date}`).format("ddd")}
         className="text-sm md:text-md xl:text-lg font-medium uppercase"
       />
-    </div>
+    </button>
   ));
+
   return (
-    <div className="flex gap-4 w-full items-center">
-      <Heading
-        heading={monthsArray[currentMonth]}
-        className="font-bold uppercase text-md text-custom-green -rotate-90"
-      />
-      <div className="flex gap-4">{calender}</div>
+    <div className="flex w-full items-center">
+      <div
+        id="calendar"
+        className="flex gap-4 md:gap-8 lg:gap-12 xl:gap-14 w-full"
+      >
+        {calender}
+      </div>
     </div>
   );
 };
