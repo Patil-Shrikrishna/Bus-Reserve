@@ -81,11 +81,11 @@ const DateSelector = () => {
 
     if (calendar && scrollLeft && scrollRight) {
       scrollLeft.addEventListener("click", function () {
-        calendar.scrollLeft -= 350; // Adjust the value to control the scroll distance
+        calendar.scrollLeft -= 15; // Adjust the value to control the scroll distance
       });
 
       scrollRight.addEventListener("click", function () {
-        calendar.scrollLeft += 350; // Adjust the value to control the scroll distance
+        calendar.scrollLeft += 15; // Adjust the value to control the scroll distance
       });
     }
   }, []);
