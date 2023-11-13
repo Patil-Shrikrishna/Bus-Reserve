@@ -2,48 +2,44 @@ import React from "react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import Rating from "../components/Rating";
-import SearchBar from "../components/SearchBar";
-import HeroImage from "../assets/heroImage.jpg";
 import Heading from "../components/Heading";
 import buses from "../assets/buses.jpg";
 import happy from "../assets/happy-customer.png";
 import ticket from "../assets/ticket.jpg";
+import Selector from "../components/Selector";
 
 const Home = () => {
-  const list = [
+  const cityList = [
     "Mumbai",
     "Pune",
     "Delhi",
     "Ahmedabad",
     "Thiruanantpuram",
     "Bengalore",
-  ].map((item) => {
-    return <option value={item}>{item}</option>;
-  });
+  ];
+
   return (
     <div>
       {/* Section 1: Navber */}
       <Navbar />
       {/*Section 2: Hero Image */}
-      <div className="bg-custom-bg-heroImage bg-cover h-screen flex justify-center">
-        <div className="flex border-2 rounded-lg px-4 bg-white w-3/4 h-1/6 mt-56">
-          <div className="bg-white w-1/3 flex items-center justify-center ">
-            <label for="city">From</label>
-            <select
-              name="city"
-              id="city"
-              className="focus:outline-none border rounded-md"
-            >
-              {list}
-            </select>
-          </div>
-          <div className="bg-white w-1/3 flex items-center justify-center border-x-2">
-            <label for="to">To</label>
-          </div>
-          <div className="bg-white w-1/3 flex items-center justify-center ">
-            <label for="date">Travel Date</label>
-          </div>
-        </div>
+      <div className="bg-custom-bg-heroImage bg-cover h-screen flex px-48 flex-col overflow-scroll no-scrollbar lg:flex-row">
+        {/* From section */}
+        <Selector
+          type="From"
+          stateCity="Ahmedabad, Gujrat"
+          country="India"
+          cities={cityList}
+        />
+        {/* To section */}
+        <Selector
+          type="To"
+          stateCity="New Delhi, Delhi"
+          country="India"
+          cities={cityList}
+        />
+        {/* Date section */}
+        <Selector htmlFor="selectDate" type="Travel Date" />
       </div>
 
       {/* Section 3: Milestones */}
@@ -94,7 +90,7 @@ const Home = () => {
           className="lg:text-4xl text-xl text-center font-bold p-6 px-14 lg:px-10 lg:w-2/5 w-2/4"
         />
         <div className="flex flex-col xs:flex-row md:flex-row justify-center items-center w-full bg-custom-gray py-14 gap-4">
-          <div className="flex flex-col p-6 xs:w-1/6 lg:w-1/6 w-2/3 justify-between bg-white gap-2">
+          <div className="flex flex-col p-6 xs:w-1/6 lg:w-1/6 xl:w-1/4 xxl:w-1/6 w-2/3  justify-between bg-white gap-2">
             <div className="flex items-center gap-4">
               <div className="bg-[#FDCDCD] px-2 rounded-full">
                 <Heading
@@ -114,7 +110,7 @@ const Home = () => {
             <p>Awesome travel experience with reserve. Excellent staff.</p>
           </div>
 
-          <div className="flex flex-col p-6 xs:w-1/6 lg:w-1/6 w-2/3  justify-between bg-white gap-2">
+          <div className="flex flex-col p-6 xs:w-1/6 lg:w-1/6 xl:w-1/4 xxl:w-1/6 w-2/3  justify-between bg-white gap-2">
             <div className="flex items-center gap-4">
               <div className="bg-[#FDCDCD] px-2 rounded-full">
                 <Heading
@@ -134,7 +130,7 @@ const Home = () => {
             <p>Amazing service. Always a best time with reserve.</p>
           </div>
 
-          <div className="flex flex-col p-6 xs:w-1/6 lg:w-1/6 w-2/3  justify-between bg-white gap-2">
+          <div className="flex flex-col p-6 xs:w-1/6 lg:w-1/6 xl:w-1/4 xxl:w-1/6 w-2/3  justify-between bg-white gap-2">
             <div className="flex items-center gap-4">
               <div className="bg-[#FDCDCD] px-2 rounded-full">
                 <Heading
