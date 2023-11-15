@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import Rating from "../components/Rating";
@@ -7,6 +7,8 @@ import buses from "../assets/buses.jpg";
 import happy from "../assets/happy-customer.png";
 import ticket from "../assets/ticket.jpg";
 import Selector from "../components/Selector";
+import { useDispatch, useSelector } from "react-redux";
+import { updateJourneyDetails } from "../redux/actions/updateJourneyDetails";
 
 const Home = () => {
   const cityList = [
@@ -15,8 +17,34 @@ const Home = () => {
     "Delhi",
     "Ahmedabad",
     "Thiruanantpuram",
-    "Bengalore",
+    "Bengaluru",
   ];
+  const dispatch = useDispatch();
+  let [journeyDetails, setJourneyDetails] = useState({
+    sourceCity: "",
+    destinationCity: "",
+    selectedDate: "",
+  });
+  dispatch(updateJourneyDetails(journeyDetails));
+
+  // const journeyData = useSelector((state) => state.updateJourney);
+  // console.log("journeyData: ", journeyData);
+
+  const handleClick = (id, value) => {
+    if (id === "selectedDate") {
+      setJourneyDetails((prevDetails) => ({
+        ...prevDetails,
+        selectedDate: value,
+      }));
+    } else {
+      setJourneyDetails((prevDetails) => ({
+        ...prevDetails,
+        [id]: value,
+      }));
+    }
+    // setJourneyDetails(value);
+  };
+  console.log("journeyDetails", journeyDetails);
 
   return (
     <div>
@@ -27,21 +55,24 @@ const Home = () => {
         {/* From section */}
         <Selector
           type="From"
+          id="sourceCity"
           stateCity="Ahmedabad, Gujrat"
           country="India"
           cities={cityList}
+          onClick={handleClick}
         />
         {/* To section */}
         <Selector
           type="To"
+          id="destinationCity"
           stateCity="New Delhi, Delhi"
           country="India"
           cities={cityList}
+          onClick={handleClick}
         />
         {/* Date section */}
-        <Selector htmlFor="selectDate" type="Travel Date" />
+        <Selector type="Travel Date" id="selectedDate" onClick={handleClick} />
       </div>
-
       {/* Section 3: Milestones */}
       <div className="flex flex-col items-center">
         <Heading

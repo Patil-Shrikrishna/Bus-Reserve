@@ -5,7 +5,7 @@ import { BsChevronCompactRight } from "react-icons/bs";
 import Heading from "./Heading";
 
 const DateSelector = () => {
-  const [currentMonth, setCurrentMonth] = React.useState(moment().month());
+  const [currentMonth, setCurrentMonth] = React.useState(0);
   const [isOpen, setIsOpen] = React.useState(false);
 
   const currentYear = moment().year();
@@ -38,21 +38,24 @@ const DateSelector = () => {
       />
     </button>
   ));
+  const monthsArray = [0, 1, 2, 3, 4].map((n) =>
+    moment().add(n, "months").format("MMM YYYY")
+  );
 
-  const monthsArray = [
-    "Jan",
-    "Feb",
-    "Mar",
-    "Apr",
-    "May",
-    "Jun",
-    "Jul",
-    "Aug",
-    "Sep",
-    "Oct",
-    "Nov",
-    "Dec",
-  ];
+  // const monthsArray = [
+  //   "Jan",
+  //   "Feb",
+  //   "Mar",
+  //   "Apr",
+  //   "May",
+  //   "Jun",
+  //   "Jul",
+  //   "Aug",
+  //   "Sep",
+  //   "Oct",
+  //   "Nov",
+  //   "Dec",
+  // ];
 
   const handleToggle = () => {
     setIsOpen(!isOpen);

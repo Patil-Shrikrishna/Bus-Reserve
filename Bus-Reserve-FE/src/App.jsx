@@ -1,5 +1,5 @@
 // import Home from "./pages/Home";
-// import AvailableBus from "./pages/AvailableBus";
+import AvailableBus from "./pages/AvailableBus";
 // import BusDetailCard from "./components/BusDetailCard";
 // import SeatLayout from "./components/SeatLayout";
 // import AvailableBus from "./pages/AvailableBus";
@@ -10,9 +10,9 @@ function App() {
   return (
     <div className="">
       {/* <Home /> */}
-      {/* <AvailableBus /> */}
+      <AvailableBus />
       {/* <PassengerInfo /> */}
-      <Receipt />
+      {/* <Receipt /> */}
     </div>
   );
 }

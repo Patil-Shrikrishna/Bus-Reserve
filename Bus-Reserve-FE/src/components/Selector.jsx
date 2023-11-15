@@ -11,15 +11,21 @@ import { DateCalendar } from "@mui/x-date-pickers/DateCalendar";
 const Selector = (props) => {
   const [date, setDate] = useState(dayjs());
   const [isVisible, setIsVisible] = useState(false);
+  const [value, setValue] = useState({
+    sourceCity: "",
+    destinationCity: "",
+    selectedDate: date.format("DD MMM YYYY"),
+  });
 
   useEffect(() => {
-    setDate(dayjs());
-  }, []);
-
-  function handleChange(date) {
+    handleHeadingClick();
+  }, [props.id]);
+  const handleHeadingClick = (selectedValue) => {
+    console.log("selectedValue", selectedValue);
     setDate(date);
-    setIsVisible(!isVisible);
-  }
+    setIsVisible(false);
+    props.onClick(props.id, selectedValue);
+  };
 
   return (
     <div className="flex flex-col gap-4 w-1/3">
@@ -67,7 +73,9 @@ const Selector = (props) => {
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DateCalendar
               value={date}
-              onChange={(date) => handleChange(date)}
+              onChange={(date) =>
+                handleHeadingClick(date.format("DD MMM YYYY"))
+              }
             />
           </LocalizationProvider>
         </div>
@@ -78,15 +86,17 @@ const Selector = (props) => {
           }`}
         >
           <div>
-            <InputBar type="Search" />
+            <InputBar type="search" />
           </div>
 
           <div>
             {props.cities &&
               props.cities.map((city, index) => (
                 <Heading
+                  key={index}
                   heading={city}
                   className="font-semibold text:sm md:text-md xl:text-lg xxl:text-xl"
+                  onClick={handleHeadingClick}
                 />
               ))}
           </div>
