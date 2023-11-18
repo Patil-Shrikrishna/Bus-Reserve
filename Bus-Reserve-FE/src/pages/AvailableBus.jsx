@@ -6,6 +6,7 @@ import DateSelector from "../components/DateSelector";
 import Heading from "../components/Heading";
 import CheckBox from "../components/CheckBox";
 import RadioButton from "../components/RadioButton";
+import { useSelector } from "react-redux";
 
 const AvailableBus = () => {
   const [filterObject, setFilterObject] = useState({
@@ -49,7 +50,8 @@ const AvailableBus = () => {
         : prevState[name]?.filter((item) => item !== value),
     }));
   };
-
+  const journeyData = useSelector((state) => state.updateJourney);
+  console.log("journeyData: ", journeyData);
   console.log("filterObject", filterObject);
 
   return (

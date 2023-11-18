@@ -9,6 +9,9 @@ import ticket from "../assets/ticket.jpg";
 import Selector from "../components/Selector";
 import { useDispatch, useSelector } from "react-redux";
 import { updateJourneyDetails } from "../redux/actions/updateJourneyDetails";
+import Button from "../components/Button";
+import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const Home = () => {
   const cityList = [
@@ -20,6 +23,8 @@ const Home = () => {
     "Bengaluru",
   ];
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   let [journeyDetails, setJourneyDetails] = useState({
     sourceCity: "",
     destinationCity: "",
@@ -44,35 +49,49 @@ const Home = () => {
     }
     // setJourneyDetails(value);
   };
-  console.log("journeyDetails", journeyDetails);
-
+  // console.log("journeyDetails", journeyDetails);
+  const handleSearch = () => {
+    navigate("/buses");
+  };
   return (
     <div>
       {/* Section 1: Navber */}
       <Navbar />
       {/*Section 2: Hero Image */}
-      <div className="bg-custom-bg-heroImage bg-cover h-screen flex px-48 flex-col overflow-scroll no-scrollbar lg:flex-row">
+      <div className="bg-custom-bg-heroImage bg-cover h-screen flex px-48 overflow-scroll no-scrollbar flex-col">
         {/* From section */}
-        <Selector
-          type="From"
-          id="sourceCity"
-          stateCity="Ahmedabad, Gujrat"
-          country="India"
-          cities={cityList}
-          onClick={handleClick}
-        />
-        {/* To section */}
-        <Selector
-          type="To"
-          id="destinationCity"
-          stateCity="New Delhi, Delhi"
-          country="India"
-          cities={cityList}
-          onClick={handleClick}
-        />
-        {/* Date section */}
-        <Selector type="Travel Date" id="selectedDate" onClick={handleClick} />
+        <div className="flex flex-col gap-10">
+          <div className="flex ">
+            <Selector
+              type="From"
+              id="sourceCity"
+              stateCity="Ahmedabad, Gujrat"
+              country="India"
+              cities={cityList}
+              onClick={handleClick}
+            />
+            {/* To section */}
+            <Selector
+              type="To"
+              id="destinationCity"
+              stateCity="New Delhi, Delhi"
+              country="India"
+              cities={cityList}
+              onClick={handleClick}
+            />
+            {/* Date section */}
+            <Selector
+              type="Travel Date"
+              id="selectedDate"
+              onClick={handleClick}
+            />
+          </div>
+          <div className="flex justify-center">
+            <Button name="Search" onClick={handleSearch} />
+          </div>
+        </div>
       </div>
+
       {/* Section 3: Milestones */}
       <div className="flex flex-col items-center">
         <Heading

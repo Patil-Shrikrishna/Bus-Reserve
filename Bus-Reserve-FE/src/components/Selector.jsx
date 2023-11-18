@@ -30,8 +30,8 @@ const Selector = (props) => {
   return (
     <div className="flex flex-col gap-4 w-1/3">
       <div className="flex bg-white border-2 rounded-s-lg w-full justify-between h-1/6 mt-20 xl:mt-32 xxl:mt-56">
-        <div className="bg-white px-6 w-full flex items-center justify-center ">
-          <div className="w-full" onClick={() => setIsVisible(!isVisible)}>
+        <div className="bg-white h-fit px-6 w-full flex items-center justify-center ">
+          <div className="w-full " onClick={() => setIsVisible(!isVisible)}>
             <div className="flex items-center justify-between">
               <Heading
                 heading={props.type}

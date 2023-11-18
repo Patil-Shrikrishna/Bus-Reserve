@@ -1,83 +1,106 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import moment from "moment";
 import { BsChevronCompactLeft } from "react-icons/bs";
 import { BsChevronCompactRight } from "react-icons/bs";
-import Heading from "./Heading";
+import { useDispatch, useSelector } from "react-redux";
+import { updateTravelDate } from "../redux/actions/updateTravelDate";
 
 const DateSelector = () => {
-  const [currentMonth, setCurrentMonth] = React.useState(0);
-  const [isOpen, setIsOpen] = React.useState(false);
-
-  const currentYear = moment().year();
+  const selectedDateFromState = useSelector(
+    (state) => state.updateJourney.journeyDetails.selectedDate
+  );
+  const userSelectedDate = Number(selectedDateFromState.split(" ")[0]);
+  console.log("userSelectedDate", typeof userSelectedDate, userSelectedDate);
+  const [currentMonth, setCurrentMonth] = useState(0);
+  const [currentYear, setCurrentYear] = useState(moment().year());
+  const [currentMonthYear, setCurrentMonthYear] = useState(currentMonth);
+  const [isOpen, setIsOpen] = useState(false);
+  const [selected, setSelected] = useState(userSelectedDate);
+  console.log("selected", typeof selected, selected);
+  const dispatch = useDispatch();
   const daysInMonth = moment(
     `${currentYear}-${currentMonth + 1}`,
     "YYYY-MM"
   ).daysInMonth();
   const dates = [];
-
-  for (let day = 1; day <= daysInMonth; day++) {
-    // const date = moment(`${year}-${currentMonth + 1}-${day}`, "YYYY-MM-DD");
+  for (
+    let day = currentMonth === moment().month() ? moment().date() : 1;
+    day <= daysInMonth;
+    day++
+  ) {
     dates.push(day);
   }
+
+  const handleDateClick = (e, index) => {
+    setSelected(index);
+    let date = e.target.textContent.split(" ")[0];
+    const selectedDate = moment(
+      `${currentYear}-${currentMonth + 1}-${date}`,
+      "YYYY-MM-DD"
+    );
+
+    dispatch(updateTravelDate(selectedDate.format("DD MMM YYYY")));
+  };
 
   const calender = dates.map((date, index) => (
     <button
       key={index}
-      value={moment(`${currentYear}-${currentMonth + 1}-${date}`, "YYYY-MM-DD")}
-      className=" flex flex-col items-center justify-center"
+      // id={index}
+      value={moment(`${currentYear}-${currentMonth + 1}-${date}`)}
+      className={`flex flex-col items-center px-4 justify-center text-sm md:text-md xl:text-lg font-medium uppercase ${
+        selected === date && "bg-custom-darkgray text-white"
+      }`}
+      onClick={(e) => handleDateClick(e, date)}
     >
-      <Heading
-        heading={JSON.stringify(date)}
-        className="text-sm md:text-md xl:text-2xl font-bold"
-      />
-      <Heading
-        heading={moment(`${currentYear}-${currentMonth + 1}-${date}`).format(
-          "ddd"
-        )}
-        className="text-sm md:text-md xl:text-lg font-medium uppercase"
-      />
+      {`${JSON.stringify(date)}
+      ${moment(`${currentYear}-${currentMonth + 1}-${date}`).format("ddd")}`}
     </button>
   ));
   const monthsArray = [0, 1, 2, 3, 4].map((n) =>
     moment().add(n, "months").format("MMM YYYY")
   );
 
-  // const monthsArray = [
-  //   "Jan",
-  //   "Feb",
-  //   "Mar",
-  //   "Apr",
-  //   "May",
-  //   "Jun",
-  //   "Jul",
-  //   "Aug",
-  //   "Sep",
-  //   "Oct",
-  //   "Nov",
-  //   "Dec",
-  // ];
+  const monthMap = {
+    Jan: 0,
+    Feb: 1,
+    Mar: 2,
+    Apr: 3,
+    May: 4,
+    Jun: 5,
+    Jul: 6,
+    Aug: 7,
+    Sep: 8,
+    Oct: 9,
+    Nov: 10,
+    Dec: 11,
+  };
 
   const handleToggle = () => {
     setIsOpen(!isOpen);
   };
 
   const handleClick = (item, index) => {
-    setCurrentMonth(index);
+    console.log(monthMap[item.split(" ")[0]], ":", item.split(" ")[1]);
+    setCurrentMonth(monthMap[item.split(" ")[0]]);
+    setCurrentYear(Number(item.split(" ")[1]));
+    setCurrentMonthYear(index);
     setIsOpen(!isOpen);
   };
+
   const list = monthsArray.map((item, index) => {
     return (
       <div
         key={item}
         onClick={() => handleClick(item, index)}
-        className="option px-4 py-2 hover:bg-gray-100 cursor-pointer "
+        className="option w-fit px-4 py-2 hover:bg-gray-100 cursor-pointer "
       >
         {item}
       </div>
     );
   });
 
-  React.useEffect(() => {
+  useEffect(() => {
+    setCurrentMonth(moment().month());
     const calendar = document.getElementById("calendar");
     const scrollLeft = document.getElementById("scrollLeft");
     const scrollRight = document.getElementById("scrollRight");
@@ -94,11 +117,11 @@ const DateSelector = () => {
   }, []);
   return (
     <div className="flex w-full items-center border border-custom-darkgray bg-custom-lightgray rounded-lg ">
-      <button className="" id="scrollLeft">
+      <button className="px-4" id="scrollLeft">
         <BsChevronCompactLeft size={24} />
       </button>
       {/* <MonthSelector /> */}
-      <div className="relative inline-block text-left">
+      <div className="relative inline-block text-left pr-10">
         <div>
           <button
             type="button"
@@ -106,12 +129,12 @@ const DateSelector = () => {
             onClick={handleToggle}
             className="-rotate-90 text-custom-green text-xl font-bold w-fit h-fit"
           >
-            {monthsArray[currentMonth]}
+            {monthsArray[currentMonthYear]}
           </button>
         </div>
         <div
           id="select-items"
-          className={`absolute z-10 mt-2 py-1 w-fit h-52 overflow-scroll no-scrollbar bg-white border border-gray-300 rounded-md shadow-md ${
+          className={`absolute z-10 mt-2 py-1 w-full h-52 overflow-scroll no-scrollbar bg-white border border-gray-300 rounded-md shadow-md ${
             isOpen ? "" : "hidden"
           } `}
         >
@@ -125,13 +148,13 @@ const DateSelector = () => {
         <div className="flex w-full items-center">
           <div
             id="calendar"
-            className="flex gap-4 md:gap-8 lg:gap-12 xl:gap-14 w-full"
+            className="flex gap-1 md:gap-2 lg:gap-4 xl:gap-4 w-full"
           >
             {calender}
           </div>
         </div>
       </div>
-      <button className="" id="scrollRight">
+      <button className="px-4" id="scrollRight">
         <BsChevronCompactRight size={24} />
       </button>
     </div>
