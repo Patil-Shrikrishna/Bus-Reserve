@@ -1,18 +1,19 @@
-// import Home from "./pages/Home";
+import Home from "./pages/Home";
 import AvailableBus from "./pages/AvailableBus";
-// import BusDetailCard from "./components/BusDetailCard";
-// import SeatLayout from "./components/SeatLayout";
-// import AvailableBus from "./pages/AvailableBus";
-// import PassengerInfo from "./pages/PassengerInfo";
+import PassengerInfo from "./pages/PassengerInfo";
 import Receipt from "./pages/Receipt";
+import { Routes, Route } from "react-router-dom";
 
 function App() {
   return (
     <div className="">
-      {/* <Home /> */}
-      <AvailableBus />
-      {/* <PassengerInfo /> */}
-      {/* <Receipt /> */}
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/buses" element={<AvailableBus />} />
+        <Route path="/passengerInfo" element={<PassengerInfo />} />
+        <Route path="/receipt" element={<Receipt />} />
+        {/* <Route path="*" element={<NotFound />} /> */}
+      </Routes>
     </div>
   );
 }
