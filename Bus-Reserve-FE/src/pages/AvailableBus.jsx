@@ -17,7 +17,8 @@ const AvailableBus = () => {
     busRating: [],
     busOperator: [],
   });
-
+  const trips = useSelector((state) => state.trips);
+  console.log("trips:", trips);
   const pickupDropFilter = ["pune", "Delhi", "Ahmedabad"];
   const arrivalDepartureSessionFilter = [
     "Morning Session",

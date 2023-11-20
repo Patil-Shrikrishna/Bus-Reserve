@@ -3,20 +3,45 @@ import moment from "moment";
 import { BsChevronCompactLeft } from "react-icons/bs";
 import { BsChevronCompactRight } from "react-icons/bs";
 import { useDispatch, useSelector } from "react-redux";
-import { updateTravelDate } from "../redux/actions/updateTravelDate";
+import { updateTravelDate } from "../redux/actions/journeyData/updateTravelDate";
 
 const DateSelector = () => {
   const selectedDateFromState = useSelector(
     (state) => state.updateJourney.journeyDetails.selectedDate
   );
+  const monthsArray = [0, 1, 2, 3, 4].map((n) =>
+    moment().add(n, "months").format("MMM YYYY")
+  );
+  const monthMap = {
+    Jan: 0,
+    Feb: 1,
+    Mar: 2,
+    Apr: 3,
+    May: 4,
+    Jun: 5,
+    Jul: 6,
+    Aug: 7,
+    Sep: 8,
+    Oct: 9,
+    Nov: 10,
+    Dec: 11,
+  };
   const userSelectedDate = Number(selectedDateFromState.split(" ")[0]);
-  console.log("userSelectedDate", typeof userSelectedDate, userSelectedDate);
-  const [currentMonth, setCurrentMonth] = useState(0);
-  const [currentYear, setCurrentYear] = useState(moment().year());
-  const [currentMonthYear, setCurrentMonthYear] = useState(currentMonth);
+  const userSelectedMonthYear = `${
+    selectedDateFromState.split(" ")[1]
+  } ${Number(selectedDateFromState.split(" ")[2])}`;
+  const [currentMonth, setCurrentMonth] = useState(
+    monthMap[selectedDateFromState.split(" ")[1]]
+  );
+
+  const [currentYear, setCurrentYear] = useState(
+    Number(selectedDateFromState.split(" ")[2]) || moment().year()
+  );
+  const [currentMonthYear, setCurrentMonthYear] = useState(
+    monthsArray.indexOf(userSelectedMonthYear) || currentMonth
+  );
   const [isOpen, setIsOpen] = useState(false);
   const [selected, setSelected] = useState(userSelectedDate);
-  console.log("selected", typeof selected, selected);
   const dispatch = useDispatch();
   const daysInMonth = moment(
     `${currentYear}-${currentMonth + 1}`,
@@ -45,7 +70,6 @@ const DateSelector = () => {
   const calender = dates.map((date, index) => (
     <button
       key={index}
-      // id={index}
       value={moment(`${currentYear}-${currentMonth + 1}-${date}`)}
       className={`flex flex-col items-center px-4 justify-center text-sm md:text-md xl:text-lg font-medium uppercase ${
         selected === date && "bg-custom-darkgray text-white"
@@ -56,31 +80,12 @@ const DateSelector = () => {
       ${moment(`${currentYear}-${currentMonth + 1}-${date}`).format("ddd")}`}
     </button>
   ));
-  const monthsArray = [0, 1, 2, 3, 4].map((n) =>
-    moment().add(n, "months").format("MMM YYYY")
-  );
-
-  const monthMap = {
-    Jan: 0,
-    Feb: 1,
-    Mar: 2,
-    Apr: 3,
-    May: 4,
-    Jun: 5,
-    Jul: 6,
-    Aug: 7,
-    Sep: 8,
-    Oct: 9,
-    Nov: 10,
-    Dec: 11,
-  };
 
   const handleToggle = () => {
     setIsOpen(!isOpen);
   };
 
   const handleClick = (item, index) => {
-    console.log(monthMap[item.split(" ")[0]], ":", item.split(" ")[1]);
     setCurrentMonth(monthMap[item.split(" ")[0]]);
     setCurrentYear(Number(item.split(" ")[1]));
     setCurrentMonthYear(index);
@@ -100,7 +105,9 @@ const DateSelector = () => {
   });
 
   useEffect(() => {
-    setCurrentMonth(moment().month());
+    setCurrentMonth(
+      monthMap[selectedDateFromState.split(" ")[1]] || moment().month()
+    );
     const calendar = document.getElementById("calendar");
     const scrollLeft = document.getElementById("scrollLeft");
     const scrollRight = document.getElementById("scrollRight");

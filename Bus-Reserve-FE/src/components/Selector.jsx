@@ -20,6 +20,7 @@ const Selector = (props) => {
   useEffect(() => {
     handleHeadingClick();
   }, [props.id]);
+
   const handleHeadingClick = (selectedValue) => {
     console.log("selectedValue", selectedValue);
     setDate(date);
@@ -28,14 +29,17 @@ const Selector = (props) => {
   };
 
   return (
-    <div className="flex flex-col gap-4 w-1/3">
-      <div className="flex bg-white border-2 rounded-s-lg w-full justify-between h-1/6 mt-20 xl:mt-32 xxl:mt-56">
-        <div className="bg-white h-fit px-6 w-full flex items-center justify-center ">
-          <div className="w-full " onClick={() => setIsVisible(!isVisible)}>
+    <div className="flex flex-col gap-4 w-1/3 ">
+      <div className="flex bg-white border-2 rounded-s-lg w-full justify-between">
+        <div className="bg-white px-6 w-full flex items-center justify-center ">
+          <div
+            className="w-full p-2 bg-white"
+            onClick={() => setIsVisible(!isVisible)}
+          >
             <div className="flex items-center justify-between">
               <Heading
                 heading={props.type}
-                className="font-semibold text:sm md:text-md xl:text-lg xxl:text-xl text-custom-darkgray"
+                className="font-semibold text-sm md:text-md xl:text-lg xxl:text-xl text-custom-darkgray"
               />
               {props.type === "Travel Date" ? (
                 <MdOutlineDateRange size={24} />
@@ -49,25 +53,29 @@ const Selector = (props) => {
                   ? date.format("DD MMM YYYY")
                   : props.stateCity
               }
-              className="font-semibold text:md md:text-lg xl:text-2xl xxl:text-4xl hover:cursor-pointer"
+              className="font-semibold text-md md:text-lg xl:text-2xl xxl:text-4xl hover:cursor-pointer"
             />
-            <Heading
-              heading={
-                props.type === "Travel Date"
-                  ? date.format("DD MMM YYYY")
-                  : props.country
-              }
-              className={`font-semibold text:sm md:text-md xl:text-lg xxl:text-xl ${
-                props.type === "Travel Date" ? "invisible" : ""
-              }`}
-            />
+            {(props.country || props.type === "Travel Date") && (
+              <Heading
+                heading={
+                  props.type === "Travel Date"
+                    ? date.format("DD MMM YYYY")
+                    : props.country
+                }
+                className={`font-semibold text-sm md:text-md xl:text-lg xxl:text-xl ${
+                  props.country || props.type === "Travel Date"
+                    ? "invisible"
+                    : ""
+                }`}
+              />
+            )}
           </div>
         </div>
       </div>
       {props.type === "Travel Date" ? (
         <div
-          className={`bg-white w-fit h-fit px-2  ${
-            isVisible ? "flex" : "hidden"
+          className={`bg-white w-fit h-fit px-2 ${
+            isVisible ? "block" : "hidden"
           }`}
         >
           <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -82,21 +90,20 @@ const Selector = (props) => {
       ) : (
         <div
           className={`bg-white flex flex-col w-fit p-2 ${
-            isVisible ? "flex" : "hidden"
+            isVisible ? "block" : "hidden"
           }`}
         >
           <div>
             <InputBar type="search" />
           </div>
-
           <div>
             {props.cities &&
               props.cities.map((city, index) => (
                 <Heading
                   key={index}
                   heading={city}
-                  className="font-semibold text:sm md:text-md xl:text-lg xxl:text-xl"
-                  onClick={handleHeadingClick}
+                  className="font-semibold text-sm md:text-md xl:text-lg xxl:text-xl"
+                  onClick={() => handleHeadingClick(city)}
                 />
               ))}
           </div>
