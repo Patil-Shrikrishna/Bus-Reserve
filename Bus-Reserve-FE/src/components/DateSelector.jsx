@@ -38,8 +38,11 @@ const DateSelector = () => {
     Number(selectedDateFromState.split(" ")[2]) || moment().year()
   );
   const [currentMonthYear, setCurrentMonthYear] = useState(
-    monthsArray.indexOf(userSelectedMonthYear) || currentMonth
+    monthsArray.indexOf(userSelectedMonthYear) === 0
+      ? "0"
+      : monthsArray.indexOf(userSelectedMonthYear) || currentMonth
   );
+  console.log("currentMonth", currentMonth);
   const [isOpen, setIsOpen] = useState(false);
   const [selected, setSelected] = useState(userSelectedDate);
   const dispatch = useDispatch();
@@ -108,17 +111,18 @@ const DateSelector = () => {
     setCurrentMonth(
       monthMap[selectedDateFromState.split(" ")[1]] || moment().month()
     );
+
     const calendar = document.getElementById("calendar");
     const scrollLeft = document.getElementById("scrollLeft");
     const scrollRight = document.getElementById("scrollRight");
 
     if (calendar && scrollLeft && scrollRight) {
       scrollLeft.addEventListener("click", function () {
-        calendar.scrollLeft -= 15; // Adjust the value to control the scroll distance
+        calendar.scrollLeft -= 15;
       });
 
       scrollRight.addEventListener("click", function () {
-        calendar.scrollLeft += 15; // Adjust the value to control the scroll distance
+        calendar.scrollLeft += 15;
       });
     }
   }, []);

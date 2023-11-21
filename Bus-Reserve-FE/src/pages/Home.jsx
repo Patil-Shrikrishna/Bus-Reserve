@@ -12,6 +12,7 @@ import { updateJourneyDetails } from "../redux/actions/journeyData/updateJourney
 import Button from "../components/Button";
 import { useNavigate } from "react-router-dom";
 import getTrips from "../api/getTrips";
+import moment from "moment";
 const Home = () => {
   const cityList = [
     "Mumbai",
@@ -27,7 +28,7 @@ const Home = () => {
   let [journeyDetails, setJourneyDetails] = useState({
     sourceCity: "",
     destinationCity: "",
-    selectedDate: "",
+    selectedDate: moment().date(),
   });
 
   // const journeyData = useSelector((state) => state.updateJourney);
@@ -83,6 +84,7 @@ const Home = () => {
             <Selector
               type="Travel Date"
               id="selectedDate"
+              date={`${journeyDetails.selectedDate || "Select Date"}`}
               onClick={handleClick}
             />
           </div>

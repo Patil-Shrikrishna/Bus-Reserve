@@ -17,8 +17,10 @@ const AvailableBus = () => {
     busRating: [],
     busOperator: [],
   });
+  // trips data fetched from database
   const trips = useSelector((state) => state.trips);
   console.log("trips:", trips);
+
   const pickupDropFilter = ["pune", "Delhi", "Ahmedabad"];
   const arrivalDepartureSessionFilter = [
     "Morning Session",
@@ -84,7 +86,7 @@ const AvailableBus = () => {
               {arrivalDepartureSessionFilter.map((item) => (
                 <CheckBox
                   select={handleCheckboxChange}
-                  name="arrivalTime"
+                  name="departureTime"
                   key={item}
                   // isChecked={filterObject.arrivalTime.includes(item)}
                   label={item}
@@ -100,7 +102,7 @@ const AvailableBus = () => {
               {arrivalDepartureSessionFilter.map((item) => (
                 <CheckBox
                   select={handleCheckboxChange}
-                  name="departureTime"
+                  name="arrivalTime"
                   key={item}
                   // isChecked={filterObject.departureTime.includes(item)}
                   label={item}
@@ -181,8 +183,8 @@ const AvailableBus = () => {
 
           {/* Section 2.2.2 : Bus cards */}
           <div className="flex w-full flex-col overflow-scroll no-scrollbar h-screen gap-4">
-            {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((item) => {
-              return <BusDetailCard key={item} />;
+            {trips.trips.map((item, index) => {
+              return <BusDetailCard key={index} data={item} />;
             })}
           </div>
         </div>

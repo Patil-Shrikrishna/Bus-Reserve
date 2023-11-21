@@ -11,11 +11,6 @@ import { DateCalendar } from "@mui/x-date-pickers/DateCalendar";
 const Selector = (props) => {
   const [date, setDate] = useState(dayjs());
   const [isVisible, setIsVisible] = useState(false);
-  const [value, setValue] = useState({
-    sourceCity: "",
-    destinationCity: "",
-    selectedDate: date.format("DD MMM YYYY"),
-  });
 
   useEffect(() => {
     handleHeadingClick();
@@ -50,7 +45,7 @@ const Selector = (props) => {
             <Heading
               heading={
                 props.type === "Travel Date"
-                  ? date.format("DD MMM YYYY")
+                  ? props.date || date.format("DD MMM YYYY")
                   : props.stateCity
               }
               className="font-semibold text-md md:text-lg xl:text-2xl xxl:text-4xl hover:cursor-pointer"

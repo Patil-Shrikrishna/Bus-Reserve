@@ -9,6 +9,45 @@ import SeatLayout from "./SeatLayout";
 const BusDetailCard = (props) => {
   const [isOpen, setIsOpen] = useState(false);
 
+  const {
+    busAmenities,
+    busCategory,
+    busFare,
+    busName,
+    busNumber,
+    busRating,
+    totalSeats,
+    totalWindowSeatsAvailable,
+  } = props.data.busDetails[0];
+
+  const { busOwnerID, endTime, from, seatBooked, startTime, to } = props.data;
+
+  const convertTime = (timeString) => {
+    const utcDate = new Date(timeString);
+    const time = utcDate.toLocaleTimeString("en-IN", {
+      hour12: false,
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+    const options = { day: "2-digit", month: "short" };
+    const date = utcDate.toLocaleDateString("en-IN", options);
+    return `${time}, ${date}`;
+  };
+
+  const calculateDuration = (start, end) => {
+    const time1 = new Date(start);
+    const time2 = new Date(end);
+
+    const timeDifferenceInMilliseconds = Math.abs(
+      time2.getTime() - time1.getTime()
+    );
+
+    const hours = Math.floor(timeDifferenceInMilliseconds / (1000 * 60 * 60));
+    const minutes = Math.floor(
+      (timeDifferenceInMilliseconds / (1000 * 60)) % 60
+    );
+    return `${hours} hours ${minutes} min`;
+  };
   return (
     <div className="flex flex-col border border-custom-darkgray rounded-lg w-full ">
       <div className="flex w-full ">
@@ -16,10 +55,10 @@ const BusDetailCard = (props) => {
           {/* Line 1 */}
           <div className="flex gap-4 items-center">
             <Heading
-              heading="Intercity Smart Bus"
+              heading={busName}
               className="text-sm md:text-md lg:text-lg xl:text-2xl xxl:text-3xl font-bold "
             />
-            <Rating rating="4.5" />
+            <Rating rating={busRating.toFixed(1)} />
             <Heading
               heading="Ratings"
               className="text-xs md:text-sm lg:text-md xl:text-lg xxl:text-xl text-custom-darkgray font-bold "
@@ -28,63 +67,46 @@ const BusDetailCard = (props) => {
           {/* Line 2 */}
           <div className="flex gap-4 font-extrabold">
             <Heading
-              heading="A/C Sleeper (2+1)"
+              heading={busCategory}
               className="text-xs lg:text-md xl:text-xl xxl:text-xl font-bold "
             />
             |
             <Heading
-              heading="24 Seats Left"
+              heading={`${totalSeats} Seats Left`}
               className="text-xs lg:text-md xl:text-xl xxl:text-xl font-bold "
             />
             |
             <Heading
-              heading="12 Window's Left"
+              heading={`${totalWindowSeatsAvailable} Window's Left`}
               className="text-xs lg:text-md xl:text-xl xxl:text-xl font-bold"
             />
           </div>
           {/* Line 3 */}
           <div className="flex gap-4 items-center">
             <Heading
-              heading="07:00, 21 Nov"
+              heading={convertTime(startTime)}
               className="text-xs lg:text-md xl:text-lg xxl:text-3xl font-bold"
             />
             <div className="border border-custom-darkgray w-6 lg:w-10 xl:w-16 xxl:w-20 h-0"></div>
             <Heading
-              heading="07 hrs 59 min"
+              heading={calculateDuration(startTime, endTime)}
               className="text-xs lg:text-md xl:text-lg xxl:text-3xl font-bold text-custom-darkgray"
             />
             <div className="border border-custom-darkgray w-6 lg:w-10 xl:w-16 xxl:w-20 h-0"></div>
             <Heading
-              heading="15:00, 21 Nov"
+              heading={convertTime(endTime)}
               className="text-xs lg:text-md xl:text-lg xxl:text-3xl  font-bold"
             />
           </div>
           {/* Line 4 */}
-          <div className="text-custom-blue flex gap-1 items-center mt-4">
-            <Heading
-              heading="Live Tracking"
-              className="text-xs lg:text-md xl:text-lg xxl:text-xl font-bold"
-            />
-            |
-            <Heading
-              heading="Policies"
-              className="text-xs lg:text-md xl:text-lg xxl:text-xl font-bold"
-            />
-            |
-            <Heading
-              heading="Photos"
-              className="text-xs lg:text-md xl:text-lg xxl:text-xl font-bold"
-            />
-            |
-            <Heading
-              heading="Amenities"
-              className="text-xs lg:text-md xl:text-lg xxl:text-xl font-bold"
-            />
-            |
-            <Heading
-              heading="Reviews"
-              className="text-xs lg:text-md xl:text-lg font-bold"
-            />
+          <div className="text-custom-blue flex gap-4 items-center mt-4">
+            {props.data.busDetails[0].busAmenities.map((item, index) => (
+              <Heading
+                key={index}
+                heading={item}
+                className="text-xs lg:text-md xl:text-lg xxl:text-xl font-bold"
+              />
+            ))}
           </div>
         </div>
         {/* <div className="border border-custom-darkgray "></div> */}
@@ -98,7 +120,7 @@ const BusDetailCard = (props) => {
             className="text-sm md:text-md lg:text-lg xl:text-lg font-bold mt-4"
           />
           <Heading
-            heading="₹ 899"
+            heading={`₹ ${busFare}`}
             className="text-sm md:text-md lg:text-lg xl:text-3xl font-bold"
           />
           <Button
@@ -180,24 +202,36 @@ const BusDetailCard = (props) => {
                 <div className="flex justify-between">
                   {/* Line 1  */}
                   <Heading
-                    heading="Ahmedabad"
+                    heading={from.split(",")[0]}
                     className="text-md font-semibold"
                   />
                   {/* Line 1  */}
-                  <Heading heading="07:00" className="text-md font-semibold" />
+                  <Heading
+                    heading={convertTime(startTime).split(",")[0]}
+                    className="text-md font-semibold"
+                  />
                 </div>
                 <div className="flex justify-between">
                   {/* Line 1  */}
-                  <Heading heading="Delhi" className="text-md font-semibold" />
+                  <Heading
+                    heading={to.split(",")[0]}
+                    className="text-md font-semibold"
+                  />
                   {/* Line 1  */}
-                  <Heading heading="15:00" className="text-md font-semibold" />
+                  <Heading
+                    heading={convertTime(endTime).split(",")[0]}
+                    className="text-md font-semibold"
+                  />
                 </div>
               </div>
 
               {/* Line 3  */}
               <div className="flex justify-between border-y border-custom-darkgray">
                 <Heading heading="Seat Number:" className="text-lg font-bold" />
-                <Heading heading="L01, L02" className="text-lg font-bold" />
+                <Heading
+                  heading={seatBooked.map((item) => item).join(", ")}
+                  className="text-lg font-bold"
+                />
               </div>
             </div>
             <div className="sm:flex sm:flex-col w-full">
@@ -210,7 +244,7 @@ const BusDetailCard = (props) => {
               <div className="flex justify-between">
                 <Heading heading="Amount" className="text-md font-semibold" />
                 <Heading
-                  heading="INR: 1798"
+                  heading={`INR: ${busFare}`}
                   className="text-md font-semibold"
                 />
               </div>
