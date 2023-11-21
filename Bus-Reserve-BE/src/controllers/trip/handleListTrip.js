@@ -2,7 +2,20 @@ const trips = require("../../models/tripModel");
 
 const handleListTrip = async (req, res) => {
   try {
-    const trip = await trips.find().sort({ createdAt: -1 }).limit(50);
+    // const trip = await trips.find().sort({ createdAt: -1 }).limit(50);
+    const trip = await trips
+      .aggregate([
+        {
+          $lookup: {
+            from: "bus_details",
+            localField: "busOwnerID",
+            foreignField: "busOwnerID",
+            as: "busDetails",
+          },
+        },
+      ])
+      .sort({ createdAt: -1 })
+      .limit(50);
     if (!trip) {
       res.status(404).json({ message: "Trips not found" });
     }

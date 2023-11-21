@@ -1,5 +1,5 @@
 const trips = require("../../models/tripModel");
-const busOwner = require("../../models/busOwnerModel");
+const busDetails = require("../../models/busDetailsModel");
 const handleListTripByQuery = async (req, res) => {
   try {
     const { date, from, to, rating, arrival, departure, name } = req.query;
@@ -44,7 +44,7 @@ const handleListTripByQuery = async (req, res) => {
     const filteredTrips = await trips.aggregate([
       {
         $lookup: {
-          from: "bus_owners",
+          from: busDetails,
           localField: "busOwnerID",
           foreignField: "busOwnerID",
           as: "busDetails",
