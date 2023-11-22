@@ -13,6 +13,7 @@ import Button from "../components/Button";
 import { useNavigate } from "react-router-dom";
 import getTrips from "../api/getTrips";
 import moment from "moment";
+
 const Home = () => {
   const cityList = [
     "Mumbai",
@@ -28,17 +29,20 @@ const Home = () => {
   let [journeyDetails, setJourneyDetails] = useState({
     sourceCity: "",
     destinationCity: "",
-    selectedDate: moment().date(),
+    selectedDate: null,
   });
-
-  // const journeyData = useSelector((state) => state.updateJourney);
-  // console.log("journeyData: ", journeyData);
+  const dateToString = moment(journeyDetails.selectedDate).format(
+    "DD MMM YYYY"
+  );
 
   const handleClick = (id, value) => {
     if (id === "selectedDate") {
       setJourneyDetails((prevDetails) => ({
         ...prevDetails,
-        selectedDate: value,
+        selectedDate: moment(value, "DD MMM YYYY")
+          .add(5, "hours")
+          .add(30, "minutes")
+          .toISOString(),
       }));
     } else {
       setJourneyDetails((prevDetails) => ({
@@ -46,11 +50,17 @@ const Home = () => {
         [id]: value,
       }));
     }
-    // setJourneyDetails(value);
   };
-  // console.log("journeyDetails", journeyDetails);
+
   const handleSearch = () => {
-    dispatch(getTrips());
+    const searchQuery = {
+      date: new Date(journeyDetails.selectedDate).toISOString(),
+      from: journeyDetails.sourceCity,
+      to: journeyDetails.destinationCity,
+    };
+    console.log("searchQuery", searchQuery);
+    console.log("JOURNEY", journeyDetails);
+    dispatch(getTrips(searchQuery));
     dispatch(updateJourneyDetails(journeyDetails));
     navigate("/trips");
   };
@@ -84,7 +94,9 @@ const Home = () => {
             <Selector
               type="Travel Date"
               id="selectedDate"
-              date={`${journeyDetails.selectedDate || "Select Date"}`}
+              date={`${
+                dateToString === "Invalid date" ? "Select Date" : dateToString
+              }`}
               onClick={handleClick}
             />
           </div>

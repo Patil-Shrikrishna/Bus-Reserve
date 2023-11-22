@@ -7,6 +7,7 @@ import { BsSquare } from "react-icons/bs";
 import SeatLayout from "./SeatLayout";
 
 const BusDetailCard = (props) => {
+  const [selectedSeats, setSelectedSeats] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
 
   const {
@@ -48,6 +49,13 @@ const BusDetailCard = (props) => {
     );
     return `${hours} hours ${minutes} min`;
   };
+  const receivedSeat = (seat) => {
+    const updatedArr = selectedSeats.includes(seat)
+      ? selectedSeats.filter((item) => item !== seat)
+      : [...selectedSeats, seat];
+    setSelectedSeats(updatedArr);
+  };
+  console.log("selectedSeats in card", selectedSeats);
   return (
     <div className="flex flex-col border border-custom-darkgray rounded-lg w-full ">
       <div className="flex w-full ">
@@ -100,7 +108,7 @@ const BusDetailCard = (props) => {
           </div>
           {/* Line 4 */}
           <div className="text-custom-blue flex gap-4 items-center mt-4">
-            {props.data.busDetails[0].busAmenities.map((item, index) => (
+            {busAmenities.map((item, index) => (
               <Heading
                 key={index}
                 heading={item}
@@ -183,10 +191,10 @@ const BusDetailCard = (props) => {
         <div className="flex gap-2 sm:flex-row flex-col ">
           <div className="flex sm:flex-col w-full sm:w-2/3 h-fit gap-6 justify-center items-center border border-custom-darkgray p-6 sm:p-0">
             <div className="flex gap-2 w-fit sm:-rotate-90 -my-24 sm:-my-32">
-              <SeatLayout berth="Upper Berth" />
+              <SeatLayout berth="Upper Berth" selected={receivedSeat} />
             </div>
             <div className="flex gap-2 w-fit sm:-rotate-90 sm:-my-32">
-              <SeatLayout berth="Lower Berth" />
+              <SeatLayout berth="Lower Berth" selected={receivedSeat} />
             </div>
           </div>
           {/* column 2 */}
@@ -234,14 +242,14 @@ const BusDetailCard = (props) => {
                 />
               </div>
             </div>
-            <div className="sm:flex sm:flex-col w-full">
+            <div className="flex sm:flex-col w-full items-center">
               {/* Line 4  */}
               <Heading
                 heading="Fare Details"
-                className="text-lg sm:text-2xl font-bold"
+                className="text-lg sm:text-2xl font-bold self-start"
               />
               {/* Line 5  */}
-              <div className="flex justify-between">
+              <div className="flex justify-between self-start w-full">
                 <Heading heading="Amount" className="text-md font-semibold" />
                 <Heading
                   heading={`INR: ${busFare}`}

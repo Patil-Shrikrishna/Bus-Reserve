@@ -1,6 +1,9 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Heading from "./Heading";
-import vacant from "../assets/available-bus-seat.svg";
+import vacantSeat from "../assets/available-bus-seat.svg";
+import bookedSeat from "../assets/booked-bus-seat.svg";
+import selectedSeat from "../assets/selected-bus-seat.svg";
+import Seat from "./Seat";
 
 const SeatLayout = (props) => {
   const seatNum = props.berth == "Upper Berth" ? "U" : "L";
@@ -19,8 +22,8 @@ const SeatLayout = (props) => {
       `${seatNum}06`,
       `${seatNum}08`,
       `${seatNum}10`,
-      `${seatNum}012`,
-      `${seatNum}014`,
+      `${seatNum}12`,
+      `${seatNum}14`,
     ],
     [
       `${seatNum}01`,
@@ -28,10 +31,21 @@ const SeatLayout = (props) => {
       `${seatNum}05`,
       `${seatNum}07`,
       `${seatNum}09`,
-      `${seatNum}011`,
-      `${seatNum}013`,
+      `${seatNum}11`,
+      `${seatNum}13`,
     ],
   ];
+
+  const [selected, setSelected] = useState([]);
+
+  const handleClick = (seat) => {
+    if (selected?.includes(seat) === true) {
+      setSelected((prev) => prev.filter((item) => item !== seat));
+    } else {
+      setSelected((prev) => [...prev, seat]);
+    }
+    props.selected(seat);
+  };
 
   return (
     <div className="flex gap-2">
@@ -48,13 +62,12 @@ const SeatLayout = (props) => {
           {Seats.map((line) => (
             <div key={line} className="flex flex-col gap-1 ">
               {line.map((seat) => (
-                <button
+                <Seat
                   key={seat}
-                  value={seat}
-                  onClick={() => console.log(seat)}
-                >
-                  <img src={vacant} className="flex w-4 h-8 sm:w-6 sm:h-12 " />
-                </button>
+                  seat={seat}
+                  onClick={handleClick}
+                  img={selected.includes(seat) ? selectedSeat : vacantSeat}
+                />
               ))}
             </div>
           ))}

@@ -67,7 +67,12 @@ const DateSelector = () => {
       "YYYY-MM-DD"
     );
 
-    dispatch(updateTravelDate(selectedDate.format("DD MMM YYYY")));
+    const updatedDate = moment(selectedDate, "DD MMM YYYY")
+      .add(5, "hours")
+      .add(30, "minutes")
+      .toISOString();
+
+    dispatch(updateTravelDate(updatedDate));
   };
 
   const calender = dates.map((date, index) => (

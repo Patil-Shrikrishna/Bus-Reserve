@@ -3,13 +3,12 @@ import Heading from "./Heading";
 import InputBar from "./InputBar";
 import { BsChevronDown } from "react-icons/bs";
 import { MdOutlineDateRange } from "react-icons/md";
-import dayjs from "dayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DateCalendar } from "@mui/x-date-pickers/DateCalendar";
-
+import dayjs from "dayjs";
 const Selector = (props) => {
-  const [date, setDate] = useState(dayjs());
+  const [date, setDate] = useState();
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
@@ -18,7 +17,7 @@ const Selector = (props) => {
 
   const handleHeadingClick = (selectedValue) => {
     console.log("selectedValue", selectedValue);
-    setDate(date);
+    // setDate(date);
     setIsVisible(false);
     props.onClick(props.id, selectedValue);
   };
@@ -45,18 +44,14 @@ const Selector = (props) => {
             <Heading
               heading={
                 props.type === "Travel Date"
-                  ? props.date || date.format("DD MMM YYYY")
+                  ? props.date || date?.format("DD MMM YYYY")
                   : props.stateCity
               }
               className="font-semibold text-md md:text-lg xl:text-2xl xxl:text-4xl hover:cursor-pointer"
             />
             {(props.country || props.type === "Travel Date") && (
               <Heading
-                heading={
-                  props.type === "Travel Date"
-                    ? date.format("DD MMM YYYY")
-                    : props.country
-                }
+                heading={props.type === "Travel Date" ? "date" : props.country}
                 className={`font-semibold text-sm md:text-md xl:text-lg xxl:text-xl ${
                   props.country || props.type === "Travel Date"
                     ? "invisible"
@@ -75,9 +70,9 @@ const Selector = (props) => {
         >
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DateCalendar
-              value={date}
+              value={dayjs()}
               onChange={(date) =>
-                handleHeadingClick(date.format("DD MMM YYYY"))
+                handleHeadingClick(date?.format("DD MMM YYYY"))
               }
             />
           </LocalizationProvider>

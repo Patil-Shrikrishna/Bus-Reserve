@@ -1,12 +1,18 @@
 const trips = require("../../models/tripModel");
-const busDetails = require("../../models/busDetailsModel");
 const handleListTripByQuery = async (req, res) => {
   try {
     const { date, from, to, rating, arrival, departure, name } = req.query;
     const filters = {};
 
     if (date) {
-      filters.date = date;
+      const currentDate = new Date(date);
+      const nextDay = new Date(currentDate);
+      nextDay.setDate(currentDate.getDate() + 1);
+
+      filters.startTime = {
+        $gte: new Date(date),
+        $lt: nextDay,
+      };
     }
 
     if (from) {
@@ -44,7 +50,7 @@ const handleListTripByQuery = async (req, res) => {
     const filteredTrips = await trips.aggregate([
       {
         $lookup: {
-          from: busDetails,
+          from: "bus_details",
           localField: "busOwnerID",
           foreignField: "busOwnerID",
           as: "busDetails",
