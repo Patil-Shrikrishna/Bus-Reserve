@@ -1,51 +1,104 @@
 const trips = require("../../models/tripModel");
 const handleListTripByQuery = async (req, res) => {
   try {
-    const { date, from, to, rating, arrival, departure, name } = req.query;
+    const {
+      from,
+      to,
+      travelDate,
+      pickupPoint,
+      dropPoint,
+      busRating,
+      arrivalTime,
+      departureTime,
+      busOperator,
+    } = req.query;
     const filters = {};
 
-    if (date) {
-      const currentDate = new Date(date);
+    const sessionFilter = (session) => {
+      const minTime = new Date(travelDate);
+      const maxTime = new Date(travelDate);
+
+      if (session === "Morning Session") {
+        minTime.setHours(0, 0, 0);
+        minTime.setHours(minTime.getHours() + 5);
+        minTime.setMinutes(minTime.getMinutes() + 30);
+
+        maxTime.setHours(11, 59, 59);
+        maxTime.setHours(maxTime.getHours() + 5);
+        maxTime.setMinutes(maxTime.getMinutes() + 30);
+
+        return {
+          $gte: new Date(minTime.toISOString()),
+          $lte: new Date(maxTime.toISOString()),
+        };
+      } else if (session === "Afternoon Session") {
+        minTime.setHours(12, 0, 0);
+        minTime.setHours(minTime.getHours() + 5);
+        minTime.setMinutes(minTime.getMinutes() + 30);
+
+        maxTime.setHours(17, 59, 59);
+        maxTime.setHours(maxTime.getHours() + 5);
+        maxTime.setMinutes(maxTime.getMinutes() + 30);
+
+        return {
+          $gte: new Date(minTime.toISOString()),
+          $lte: new Date(maxTime.toISOString()),
+        };
+      } else if (session === "Evening Session") {
+        minTime.setHours(18, 0, 0);
+        minTime.setHours(minTime.getHours() + 5);
+        minTime.setMinutes(minTime.getMinutes() + 30);
+
+        maxTime.setHours(23, 59, 59);
+        maxTime.setHours(maxTime.getHours() + 5);
+        maxTime.setMinutes(maxTime.getMinutes() + 30);
+
+        return {
+          $gte: new Date(minTime.toISOString()),
+          $lte: new Date(maxTime.toISOString()),
+        };
+      }
+    };
+
+    if (travelDate) {
+      const currentDate = new Date(travelDate);
       const nextDay = new Date(currentDate);
       nextDay.setDate(currentDate.getDate() + 1);
 
       filters.startTime = {
-        $gte: new Date(date),
+        $gte: new Date(travelDate),
         $lt: nextDay,
       };
     }
 
-    if (from) {
-      filters.from = from;
+    if (departureTime) {
+      filters.startTime = sessionFilter(departureTime);
     }
 
-    if (to) {
-      filters.to = to;
+    if (arrivalTime) {
+      filters.endTime = sessionFilter(arrivalTime);
     }
 
-    if (arrival) {
-      filters.arrival = arrival;
+    if (from || pickupPoint) {
+      filters.from = from || pickupPoint;
     }
 
-    if (departure) {
-      filters.departure = departure;
+    if (to || dropPoint) {
+      filters.to = to || dropPoint;
     }
 
-    if (name) {
-      filters.name = name;
+    if (busOperator) {
+      filters["busDetails.busName"] = {
+        $in: busOperator,
+      };
     }
-    const busFilter = {};
-    if (rating) {
-      busFilter.rating = Number(rating);
+    if (busRating) {
+      filters["busDetails.busRating"] = {
+        $gte: Number(busRating[0]),
+        $lt: Number(busRating[0]) === 0 ? Number(3) : Number(6),
+      };
     }
     console.log("trips Filters:", filters);
-    console.log("bus Filters:", busFilter);
-
-    // let trip = await trips.find(filters);
-
-    // const buses = await busOwner.find(busFilter);
-
-    // const filteredTrips = { trip, buses };
 
     const filteredTrips = await trips.aggregate([
       {
@@ -56,7 +109,24 @@ const handleListTripByQuery = async (req, res) => {
           as: "busDetails",
         },
       },
-      { $match: filters },
+      // { $match: filters },
+
+      // NEW code Start
+      // {
+      //   $unwind: "$busDetails",
+      // },
+      {
+        $match: filters,
+      },
+      // {
+      //   $group: {
+      //     _id: "$busDetails.busOwnerID", // Grouping by busOwnerID
+      //     trips: { $push: "$$ROOT" }, // Collecting trip documents into an array
+      //     busDetails: { $push: "$busDetails" },
+      //   },
+      // },
+
+      // NEW code end
     ]);
 
     console.log("Filtered Trips:", filteredTrips);

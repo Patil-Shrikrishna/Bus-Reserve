@@ -6,8 +6,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { updateTravelDate } from "../redux/actions/journeyData/updateTravelDate";
 
 const DateSelector = () => {
-  const selectedDateFromState = useSelector(
-    (state) => state.updateJourney.journeyDetails.selectedDate
+  const selectedDateFromState = useSelector((state) =>
+    moment(state.updateJourney.journeyDetails.selectedDate).format(
+      "DD MMM YYYY"
+    )
   );
   const monthsArray = [0, 1, 2, 3, 4].map((n) =>
     moment().add(n, "months").format("MMM YYYY")

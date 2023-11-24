@@ -16,10 +16,10 @@ import moment from "moment";
 
 const Home = () => {
   const cityList = [
-    "Mumbai",
-    "Pune",
-    "Delhi",
-    "Ahmedabad",
+    "Mumbai, Maharashtra",
+    "Pune, Maharashtra",
+    "New Delhi, Delhi",
+    "Ahmedabad, Gujrat",
     "Thiruanantpuram",
     "Bengaluru",
   ];
@@ -54,12 +54,10 @@ const Home = () => {
 
   const handleSearch = () => {
     const searchQuery = {
-      date: new Date(journeyDetails.selectedDate).toISOString(),
+      travelDate: new Date(journeyDetails.selectedDate).toISOString(),
       from: journeyDetails.sourceCity,
       to: journeyDetails.destinationCity,
     };
-    console.log("searchQuery", searchQuery);
-    console.log("JOURNEY", journeyDetails);
     dispatch(getTrips(searchQuery));
     dispatch(updateJourneyDetails(journeyDetails));
     navigate("/trips");

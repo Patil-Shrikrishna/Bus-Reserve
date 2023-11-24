@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import BusDetailCard from "../components/BusDetailCard";
@@ -6,22 +6,43 @@ import DateSelector from "../components/DateSelector";
 import Heading from "../components/Heading";
 import CheckBox from "../components/CheckBox";
 import RadioButton from "../components/RadioButton";
-import { useSelector } from "react-redux";
+import getTrips from "../api/getTrips";
+import { useDispatch, useSelector } from "react-redux";
 
 const AvailableBus = () => {
+  const trips = useSelector((state) => state.trips);
+
+  const journeyData = useSelector((state) => state.updateJourney);
+  const [isRendered, setIsRendered] = useState(false);
   const [filterObject, setFilterObject] = useState({
-    arrivalTime: [],
-    departureTime: [],
-    PickupPoint: "",
-    DropPoint: "",
-    busRating: [],
+    pickupPoint: journeyData.journeyDetails.sourceCity,
+    dropPoint: journeyData.journeyDetails.destinationCity,
+    travelDate: new Date(journeyData.journeyDetails.selectedDate).toISOString(),
+    arrivalTime: "",
+    departureTime: "",
+    busRating: "",
     busOperator: [],
   });
-  // trips data fetched from database
-  const trips = useSelector((state) => state.trips);
-  console.log("trips:", trips);
 
-  const pickupDropFilter = ["pune", "Delhi", "Ahmedabad"];
+  console.log("trips:", trips);
+  console.log("journeyData: ", journeyData);
+  console.log("filterObject", filterObject);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    if (isRendered) {
+      dispatch(getTrips(filterObject));
+    }
+    setIsRendered(true);
+  }, [filterObject]);
+
+  // trips data fetched from database
+
+  const pickupDropFilter = [
+    "Mumbai, Maharashtra",
+    "Pune, Maharashtra",
+    "New Delhi, Delhi",
+    "Ahmedabad, Gujrat",
+  ];
   const arrivalDepartureSessionFilter = [
     "Morning Session",
     "Afternoon Session",
@@ -31,7 +52,7 @@ const AvailableBus = () => {
   const busOperatorFilter = [
     "Tata Motors",
     "Eicher Motors",
-    "Intercity Smart Bus",
+    "IntrCity Smart Bus",
   ];
 
   const handleClearAll = () => {};
@@ -53,9 +74,6 @@ const AvailableBus = () => {
         : prevState[name]?.filter((item) => item !== value),
     }));
   };
-  const journeyData = useSelector((state) => state.updateJourney);
-  console.log("journeyData: ", journeyData);
-  console.log("filterObject", filterObject);
 
   return (
     <div>
@@ -84,10 +102,11 @@ const AvailableBus = () => {
                 className="font-bold text-sm sm:text-2xl"
               />
               {arrivalDepartureSessionFilter.map((item) => (
-                <CheckBox
-                  select={handleCheckboxChange}
+                <RadioButton
+                  select={handleRadioChange}
                   name="departureTime"
                   key={item}
+                  id={`departure-${item}`}
                   // isChecked={filterObject.arrivalTime.includes(item)}
                   label={item}
                   className="text-xs sm:text-lg font-semibold flex items-center gap-2"
@@ -100,10 +119,11 @@ const AvailableBus = () => {
                 className="font-bold text-sm sm:text-2xl"
               />
               {arrivalDepartureSessionFilter.map((item) => (
-                <CheckBox
-                  select={handleCheckboxChange}
+                <RadioButton
+                  select={handleRadioChange}
                   name="arrivalTime"
                   key={item}
+                  id={`arrival-${item}`}
                   // isChecked={filterObject.departureTime.includes(item)}
                   label={item}
                   className="text-xs sm:text-lg font-semibold flex items-center gap-2"
@@ -120,7 +140,7 @@ const AvailableBus = () => {
                   key={item}
                   label={item}
                   select={handleRadioChange}
-                  name="PickupPoint"
+                  name="pickupPoint"
                   id={`pickup-${item}`}
                   className="text-xs sm:text-lg font-semibold flex items-center gap-2"
                 />
@@ -136,7 +156,7 @@ const AvailableBus = () => {
                   key={item}
                   label={item}
                   select={handleRadioChange}
-                  name="DropPoint"
+                  name="dropPoint"
                   id={`drop-${item}`}
                   className="text-xs sm:text-lg font-semibold flex items-center gap-2"
                 />
@@ -148,10 +168,11 @@ const AvailableBus = () => {
                 className="font-bold text-sm sm:text-2xl"
               />
               {ratingFilter.map((item) => (
-                <CheckBox
-                  select={handleCheckboxChange}
+                <RadioButton
+                  select={handleRadioChange}
                   name="busRating"
                   key={item}
+                  id={`rating-${item}`}
                   // isChecked={filterObject.busRating.includes(item)}
                   label={item}
                   className="text-xs sm:text-lg font-semibold flex items-center gap-2"

@@ -5,7 +5,7 @@ import Button from "./Button";
 import RadioButton from "./RadioButton";
 import { BsSquare } from "react-icons/bs";
 import SeatLayout from "./SeatLayout";
-
+import moment from "moment-timezone";
 const BusDetailCard = (props) => {
   const [selectedSeats, setSelectedSeats] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
@@ -24,15 +24,10 @@ const BusDetailCard = (props) => {
   const { busOwnerID, endTime, from, seatBooked, startTime, to } = props.data;
 
   const convertTime = (timeString) => {
-    const utcDate = new Date(timeString);
-    const time = utcDate.toLocaleTimeString("en-IN", {
-      hour12: false,
-      hour: "2-digit",
-      minute: "2-digit",
-    });
-    const options = { day: "2-digit", month: "short" };
-    const date = utcDate.toLocaleDateString("en-IN", options);
-    return `${time}, ${date}`;
+    const utcDate = moment.utc(timeString);
+    return `${moment(utcDate).format("HH:mm")}, ${moment(utcDate).format(
+      "DD MMM"
+    )}`;
   };
 
   const calculateDuration = (start, end) => {
