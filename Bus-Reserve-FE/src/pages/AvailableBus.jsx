@@ -8,6 +8,7 @@ import CheckBox from "../components/CheckBox";
 import RadioButton from "../components/RadioButton";
 import getTrips from "../api/getTrips";
 import { useDispatch, useSelector } from "react-redux";
+import { updateBookingData } from "../redux/actions/bookingData/updateBookingData";
 
 const AvailableBus = () => {
   const trips = useSelector((state) => state.trips);
@@ -73,6 +74,11 @@ const AvailableBus = () => {
         ? [...(prevState[name] || []), value]
         : prevState[name]?.filter((item) => item !== value),
     }));
+  };
+
+  const handleBooking = (dataToBook) => {
+    console.log("dataToBook", dataToBook);
+    dispatch(updateBookingData(dataToBook));
   };
 
   return (
@@ -205,7 +211,13 @@ const AvailableBus = () => {
           {/* Section 2.2.2 : Bus cards */}
           <div className="flex w-full flex-col overflow-scroll no-scrollbar h-screen gap-4">
             {trips.trips.map((item, index) => {
-              return <BusDetailCard key={index} data={item} />;
+              return (
+                <BusDetailCard
+                  key={index}
+                  data={item}
+                  tripToBook={handleBooking}
+                />
+              );
             })}
           </div>
         </div>

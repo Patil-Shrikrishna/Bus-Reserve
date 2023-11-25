@@ -6,10 +6,11 @@ import RadioButton from "./RadioButton";
 import { BsSquare } from "react-icons/bs";
 import SeatLayout from "./SeatLayout";
 import moment from "moment-timezone";
+import { useNavigate } from "react-router-dom";
 const BusDetailCard = (props) => {
   const [selectedSeats, setSelectedSeats] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
-
+  const navigate = useNavigate();
   const {
     busAmenities,
     busCategory,
@@ -51,6 +52,27 @@ const BusDetailCard = (props) => {
     setSelectedSeats(updatedArr);
   };
   console.log("selectedSeats in card", selectedSeats);
+  const handleClick = () => {
+    const dataToBookObj = {
+      busAmenities,
+      busCategory,
+      busFare,
+      busName,
+      busNumber,
+      busRating,
+      totalSeats,
+      totalWindowSeatsAvailable,
+      busOwnerID,
+      endTime,
+      from,
+      seatBooked,
+      startTime,
+      to,
+      selectedSeats,
+    };
+    props.tripToBook(dataToBookObj);
+    navigate("/passengerInfo");
+  };
   return (
     <div className="flex flex-col border border-custom-darkgray rounded-lg w-full ">
       <div className="flex w-full ">
@@ -75,7 +97,7 @@ const BusDetailCard = (props) => {
             />
             |
             <Heading
-              heading={`${totalSeats} Seats Left`}
+              heading={`${totalSeats - seatBooked.length} Seats Left`}
               className="text-xs lg:text-md xl:text-xl xxl:text-xl font-bold "
             />
             |
@@ -232,7 +254,7 @@ const BusDetailCard = (props) => {
               <div className="flex justify-between border-y border-custom-darkgray">
                 <Heading heading="Seat Number:" className="text-lg font-bold" />
                 <Heading
-                  heading={seatBooked.map((item) => item).join(", ")}
+                  heading={selectedSeats.map((item) => item).join(", ")}
                   className="text-lg font-bold"
                 />
               </div>
@@ -244,17 +266,17 @@ const BusDetailCard = (props) => {
                 className="text-lg sm:text-2xl font-bold self-start"
               />
               {/* Line 5  */}
-              <div className="flex justify-between self-start w-full">
+              <div className="flex justify-between self-start w-full mb-10">
                 <Heading heading="Amount" className="text-md font-semibold" />
                 <Heading
-                  heading={`INR: ${busFare}`}
+                  heading={`INR: ${busFare * selectedSeats.length}`}
                   className="text-md font-semibold"
                 />
               </div>
               <Button
                 name="Proceed To Book"
                 className="text-sm xl:text-lg font-bold mt-4 w-full"
-                onClick={(e) => handleClick(e)}
+                onClick={handleClick}
                 id={`toggleButton${props.id}`}
               />
             </div>
