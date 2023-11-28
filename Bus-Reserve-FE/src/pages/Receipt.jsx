@@ -1,11 +1,22 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import Heading from "../components/Heading";
 import ok from "../assets/Ok.svg";
 import BusDetailsMiniCard from "../components/BusDetailsMiniCard";
+import { useDispatch, useSelector } from "react-redux";
+import postBooking from "../api/postBooking";
 
 const Receipt = () => {
+  const dispatch = useDispatch();
+  const bookingDataFromState = useSelector((state) => state.updateBooking);
+  useEffect(() => {
+    dispatch(postBooking(bookingDataFromState));
+  }, []);
+
+  // const bookingFromState = useSelector((state) => state.booking);
+  console.log("bookingFromState", bookingDataFromState);
+
   return (
     <div>
       {/* Section 1: Navbar */}
@@ -57,7 +68,9 @@ const Receipt = () => {
           </div>
         </div>
         <div className="w-full">
-          <BusDetailsMiniCard />
+          <BusDetailsMiniCard
+            data={bookingDataFromState.booking.bookingDetails}
+          />
         </div>
       </div>
       {/* Section 3: Footer */}

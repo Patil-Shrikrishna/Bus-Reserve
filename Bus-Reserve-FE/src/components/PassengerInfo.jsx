@@ -4,11 +4,11 @@ import InputBar from "./InputBar";
 
 const PassengerInfo = (props) => {
   const [passengerInfo, setPassengerInfo] = useState({
-    name: "",
-    gender: "",
-    age: "",
-    email: "",
-    contactNumber: "",
+    passengerName: "",
+    passengerGender: "",
+    passengerAge: "",
+    passengerContact: "",
+    passengerEmail: "",
     seatNumber: props.seatNumber,
   });
 
@@ -45,13 +45,13 @@ const PassengerInfo = (props) => {
         <div className="flex w-full gap-2">
           <div className="flex flex-col w-2/4">
             <Heading heading="Name" className="font-bold text-xl" />
-            <InputBar type="input" name="name" onClick={handleClick} />
+            <InputBar type="input" name="passengerName" onClick={handleClick} />
           </div>
           <div className="flex flex-col w-1/4">
             <Heading heading="Gender" className="font-bold text-xl" />
             <select
               value={passengerInfo.gender}
-              name="gender"
+              name="passengerGender"
               className="focus:outline-none dropdown border-2 border-gray-300 p-2 rounded-lg"
               onChange={handleGenderChange}
             >
@@ -63,17 +63,25 @@ const PassengerInfo = (props) => {
           </div>
           <div className="flex flex-col w-1/4">
             <Heading heading="Age(In Years)" className="font-bold text-xl" />
-            <InputBar type="input" name="age" onClick={handleClick} />
+            <InputBar type="input" name="passengerAge" onClick={handleClick} />
           </div>
         </div>
         <div className="flex w-full gap-2">
           <div className="flex flex-col w-full">
             <Heading heading="Email ID" className="font-bold text-xl" />
-            <InputBar type="input" name="email" onClick={handleClick} />
+            <InputBar
+              type="input"
+              name="passengerEmail"
+              onClick={handleClick}
+            />
           </div>
           <div className="flex flex-col w-full">
             <Heading heading="Mobile No.:" className="font-bold text-xl" />
-            <InputBar type="input" name="contactNumber" onClick={handleClick} />
+            <InputBar
+              type="input"
+              name="passengerContact"
+              onClick={handleClick}
+            />
           </div>
         </div>
       </div>

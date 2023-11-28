@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import Heading from "../components/Heading";
@@ -7,18 +7,23 @@ import BusDetailsMiniCard from "../components/BusDetailsMiniCard";
 import { useDispatch, useSelector } from "react-redux";
 import PassengerInfo from "../components/PassengerInfo";
 import { updatePassengerData } from "../redux/actions/bookingData/updatePassengerData";
+import postPaymentRequest from "../api/postPaymentRequest";
 
 const PassengerDetailPage = () => {
   const dataToBook = useSelector((state) => state.updateBooking);
+  console.log(dataToBook);
   const dispatch = useDispatch();
   const bookingDataFromState = useSelector((state) => state.updateBooking);
-  const { busFare, selectedSeats } = dataToBook.booking;
-  const [passengersData, setPassengersData] = useState([]);
+  const { busFare, selectedSeats } = dataToBook.booking.bookingDetails;
 
-  const handleClick = () => {
+  const [passengersData, setPassengersData] = useState([]);
+  useEffect(() => {
     dispatch(updatePassengerData(passengersData));
+  }, [passengersData]);
+
+  const handlePayment = () => {
+    dispatch(postPaymentRequest(bookingDataFromState));
   };
-  console.log("bookingDataFromState", bookingDataFromState);
   const handlePassengerData = (index, data) => {
     setPassengersData((prevPassengersData) => {
       const updatedPassengersData = [...prevPassengersData];
@@ -34,7 +39,7 @@ const PassengerDetailPage = () => {
       <div className="flex w-full px-40 py-20 justify-between">
         <div className="flex flex-col w-7/12 gap-6 ">
           {/* Section 2.1: Bus Details */}
-          <BusDetailsMiniCard data={dataToBook.booking} />
+          <BusDetailsMiniCard data={dataToBook.booking.bookingDetails} />
           {/* Section 2.2 : Traveler Details */}
           <div className="flex flex-col gap-6">
             <Heading
@@ -80,7 +85,7 @@ const PassengerDetailPage = () => {
             />
           </div>
           <div className="flex w-full justify-center">
-            <Button name="Proceed To Payment" onClick={handleClick} />
+            <Button name="Proceed To Payment" onClick={handlePayment} />
           </div>
         </div>
       </div>

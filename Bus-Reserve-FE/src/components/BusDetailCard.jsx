@@ -22,7 +22,8 @@ const BusDetailCard = (props) => {
     totalWindowSeatsAvailable,
   } = props.data.busDetails[0];
 
-  const { busOwnerID, endTime, from, seatBooked, startTime, to } = props.data;
+  const { _id, busOwnerID, endTime, from, seatBooked, startTime, to } =
+    props.data;
 
   const convertTime = (timeString) => {
     const utcDate = moment.utc(timeString);
@@ -54,6 +55,7 @@ const BusDetailCard = (props) => {
   console.log("selectedSeats in card", selectedSeats);
   const handleClick = () => {
     const dataToBookObj = {
+      _id,
       busAmenities,
       busCategory,
       busFare,

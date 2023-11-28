@@ -4,7 +4,10 @@ import {
 } from "../../actions/actionTypes";
 
 const initialState = {
-  booking: {},
+  booking: {
+    bookingDetails: [],
+    passengerDetails: [],
+  },
 };
 
 const updateBookingDataReducer = (state = initialState, action) => {
@@ -13,7 +16,7 @@ const updateBookingDataReducer = (state = initialState, action) => {
       return {
         ...state,
         booking: {
-          ...action.payload,
+          bookingDetails: action.payload,
         },
       };
     case UPDATE_PASSENGER_DATA:
@@ -21,7 +24,7 @@ const updateBookingDataReducer = (state = initialState, action) => {
         ...state,
         booking: {
           ...state.booking,
-          ...action.payload,
+          passengerDetails: [action.payload],
         },
       };
     default:

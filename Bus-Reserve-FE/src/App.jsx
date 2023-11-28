@@ -12,7 +12,6 @@ function App() {
         <Route path="/trips" element={<AvailableBus />} />
         <Route path="/passengerInfo" element={<PassengerDetailPage />} />
         <Route path="/receipt" element={<Receipt />} />
-        {/* <Route path="*" element={<NotFound />} /> */}
       </Routes>
     </div>
   );
