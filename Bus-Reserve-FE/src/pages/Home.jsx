@@ -15,16 +15,16 @@ import getTrips from "../api/getTrips";
 import moment from "moment";
 
 const Home = () => {
-  const cityList = [
-    "Mumbai, Maharashtra",
-    "Pune, Maharashtra",
-    "New Delhi, Delhi",
-    "Ahmedabad, Gujrat",
-    "Thiruanantpuram",
-    "Bengaluru",
-  ];
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const cityData = useSelector((state) => state.cities.cities);
+  const cityList = cityData.map((item) => {
+    const cities = item.Districts.map((city) => {
+      return `${city}, ${item.state}`;
+    });
+    return cities;
+  });
 
   let [journeyDetails, setJourneyDetails] = useState({
     sourceCity: "",

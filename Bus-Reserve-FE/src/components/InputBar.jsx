@@ -14,11 +14,13 @@ const InputBar = (props) => {
     >
       <input
         placeholder={props.name}
+        type={props.type}
         name={props.name}
         className={`${
           props.type === "search" && "bg-custom-bg-seach bg-no-repeat pl-10"
         } w-full text-xl focus:outline-none`}
         onChange={(e) => handleChange(e)}
+        required
       />
     </div>
   );

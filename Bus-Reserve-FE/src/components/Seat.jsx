@@ -6,8 +6,8 @@ const Seat = (props) => {
   };
 
   return (
-    <button value={props.seat} onClick={handleClick}>
-      <img src={props.img} className="flex w-4 h-8 sm:w-6 sm:h-12 " />
+    <button value={props.seat} onClick={handleClick} disabled={props.disabled}>
+      <img src={props.img} className={`flex w-4 h-8 sm:w-6 sm:h-12 `} />
     </button>
   );
 };

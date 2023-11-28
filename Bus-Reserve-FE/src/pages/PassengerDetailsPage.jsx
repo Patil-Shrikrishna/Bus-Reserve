@@ -51,7 +51,7 @@ const PassengerDetailPage = () => {
               <PassengerInfo
                 key={index}
                 seatNumber={item}
-                passengerNumber={index}
+                passengerNumber={index + 1}
                 data={(data) => handlePassengerData(index, data)}
               />
             ))}

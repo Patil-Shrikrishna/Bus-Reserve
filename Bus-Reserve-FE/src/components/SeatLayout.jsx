@@ -6,33 +6,33 @@ import selectedSeat from "../assets/selected-bus-seat.svg";
 import Seat from "./Seat";
 
 const SeatLayout = (props) => {
-  const seatNum = props.berth == "Upper Berth" ? "U" : "L";
+  const seatNum = props.berth == "Upper Berth" ? "UB" : "LB";
   const Seats = [
     [
-      `${seatNum}15`,
-      `${seatNum}16`,
-      `${seatNum}17`,
-      `${seatNum}18`,
-      `${seatNum}19`,
+      `15${seatNum}`,
+      `16${seatNum}`,
+      `17${seatNum}`,
+      `18${seatNum}`,
+      `19${seatNum}`,
     ],
     [],
     [
-      `${seatNum}02`,
-      `${seatNum}04`,
-      `${seatNum}06`,
-      `${seatNum}08`,
-      `${seatNum}10`,
-      `${seatNum}12`,
-      `${seatNum}14`,
+      `2${seatNum}`,
+      `4${seatNum}`,
+      `6${seatNum}`,
+      `8${seatNum}`,
+      `10${seatNum}`,
+      `12${seatNum}`,
+      `14${seatNum}`,
     ],
     [
-      `${seatNum}01`,
-      `${seatNum}03`,
-      `${seatNum}05`,
-      `${seatNum}07`,
-      `${seatNum}09`,
-      `${seatNum}11`,
-      `${seatNum}13`,
+      `1${seatNum}`,
+      `3${seatNum}`,
+      `5${seatNum}`,
+      `7${seatNum}`,
+      `9${seatNum}`,
+      `11${seatNum}`,
+      `13${seatNum}`,
     ],
   ];
 
@@ -66,7 +66,14 @@ const SeatLayout = (props) => {
                   key={seat}
                   seat={seat}
                   onClick={handleClick}
-                  img={selected.includes(seat) ? selectedSeat : vacantSeat}
+                  img={
+                    props.reserved.includes(seat)
+                      ? bookedSeat
+                      : selected.includes(seat)
+                      ? selectedSeat
+                      : vacantSeat
+                  }
+                  disabled={props.reserved.includes(seat)}
                 />
               ))}
             </div>

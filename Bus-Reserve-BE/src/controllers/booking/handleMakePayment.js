@@ -3,8 +3,6 @@ const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 const handleMakePayment = async (req, res) => {
   const bookingData = req.body.booking;
 
-  console.log("bookingData in payment API req.body", bookingData);
-
   const lineItems = [
     {
       price_data: {
@@ -22,9 +20,7 @@ const handleMakePayment = async (req, res) => {
     payment_method_types: ["card"],
     line_items: lineItems,
     mode: "payment",
-    // success_url: "http://localhost:5173/receipt",
     success_url: `http://localhost:5173/receipt`,
-    // success_url: `http://localhost:3001/booking/addbooking?bookingData=${encodedBookingData}`,
     cancel_url: "http://localhost:5173/passengerInfo",
   });
 

@@ -7,13 +7,22 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DateCalendar } from "@mui/x-date-pickers/DateCalendar";
 import dayjs from "dayjs";
+import { useDispatch, useSelector } from "react-redux";
+import getCities from "../api/getCities";
+
 const Selector = (props) => {
+  const dispatch = useDispatch();
   const [date, setDate] = useState();
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
     handleHeadingClick();
   }, [props.id]);
+
+  const handleChange = (name, value) => {
+    console.log("City name: ", value);
+    dispatch(getCities(value));
+  };
 
   const handleHeadingClick = (selectedValue) => {
     console.log("selectedValue", selectedValue);
@@ -84,7 +93,7 @@ const Selector = (props) => {
           }`}
         >
           <div>
-            <InputBar type="search" />
+            <InputBar type="text" name="City" onClick={handleChange} />
           </div>
           <div>
             {props.cities &&

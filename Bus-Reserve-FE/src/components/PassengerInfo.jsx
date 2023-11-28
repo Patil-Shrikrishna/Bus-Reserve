@@ -45,7 +45,7 @@ const PassengerInfo = (props) => {
         <div className="flex w-full gap-2">
           <div className="flex flex-col w-2/4">
             <Heading heading="Name" className="font-bold text-xl" />
-            <InputBar type="input" name="passengerName" onClick={handleClick} />
+            <InputBar type="text" name="passengerName" onClick={handleClick} />
           </div>
           <div className="flex flex-col w-1/4">
             <Heading heading="Gender" className="font-bold text-xl" />
@@ -63,14 +63,14 @@ const PassengerInfo = (props) => {
           </div>
           <div className="flex flex-col w-1/4">
             <Heading heading="Age(In Years)" className="font-bold text-xl" />
-            <InputBar type="input" name="passengerAge" onClick={handleClick} />
+            <InputBar type="number" name="passengerAge" onClick={handleClick} />
           </div>
         </div>
         <div className="flex w-full gap-2">
           <div className="flex flex-col w-full">
             <Heading heading="Email ID" className="font-bold text-xl" />
             <InputBar
-              type="input"
+              type="email"
               name="passengerEmail"
               onClick={handleClick}
             />
@@ -78,7 +78,7 @@ const PassengerInfo = (props) => {
           <div className="flex flex-col w-full">
             <Heading heading="Mobile No.:" className="font-bold text-xl" />
             <InputBar
-              type="input"
+              type="tel"
               name="passengerContact"
               onClick={handleClick}
             />

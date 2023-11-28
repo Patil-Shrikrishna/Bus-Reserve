@@ -10,6 +10,7 @@ app.use(express.json());
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
 
+app.use("/cities", require("./routes/cities"));
 app.use("/trip", require("./routes/trip"));
 app.use("/booking", require("./routes/booking"));
 

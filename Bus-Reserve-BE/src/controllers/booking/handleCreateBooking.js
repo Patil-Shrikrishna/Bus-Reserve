@@ -37,7 +37,6 @@ const handleCreateBooking = async (req, res) => {
     session.startTransaction();
 
     const booking = await bookings.create([postData], { session: session });
-    // const { _id, date, from, to } = postData;
     const filters = { _id, from, to };
     const updateSeatsBooked = await trips.updateOne(
       {

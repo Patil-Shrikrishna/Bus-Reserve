@@ -210,10 +210,18 @@ const BusDetailCard = (props) => {
         <div className="flex gap-2 sm:flex-row flex-col ">
           <div className="flex sm:flex-col w-full sm:w-2/3 h-fit gap-6 justify-center items-center border border-custom-darkgray p-6 sm:p-0">
             <div className="flex gap-2 w-fit sm:-rotate-90 -my-24 sm:-my-32">
-              <SeatLayout berth="Upper Berth" selected={receivedSeat} />
+              <SeatLayout
+                berth="Upper Berth"
+                reserved={seatBooked}
+                selected={receivedSeat}
+              />
             </div>
             <div className="flex gap-2 w-fit sm:-rotate-90 sm:-my-32">
-              <SeatLayout berth="Lower Berth" selected={receivedSeat} />
+              <SeatLayout
+                berth="Lower Berth"
+                reserved={seatBooked}
+                selected={receivedSeat}
+              />
             </div>
           </div>
           {/* column 2 */}
